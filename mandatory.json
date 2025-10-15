@@ -1,0 +1,539 @@
+{
+    "Type of Investors": {
+        "Trade Booking (Initial Subs)": {
+            "Commitment Amount": "",
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Duly Signed Subscription Agreement": "",
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Email IDs": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wiring Details": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Incorrect Tax Identity": "investorSSN_ID",
+            "Minimum Investment": "",
+            "Accredited/Qualified Status": {
+                "Accredited Investor Status": "Investor Eligibility.Accredited Investor Status",
+                "Qualified Client Status": "Investor Eligibility.Qualified Client Status",
+                "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser"
+            },
+            "Restricted Domicile of the Investor": "",
+            "New Issue Eligibility": "Investor Eligibility.New Issue Eligiblity/ FINRA",
+            "AML/KYC Clearance": ""
+        },
+        "Individual": {
+            "Name": "investorFullLegalName_ID",
+            "Address (Jurisdiction)": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Tax ID": "investorSSN_ID",
+            "Email ID": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatory": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Joint Owner Details": {
+                "Name": "Co-Investorname_ID",
+                "Email": "Co-InvestorMail_ID",
+                "DOB": "Co-investorDOB_ID"
+            },
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "PEP Status": "PEP_IDs",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "Qualified Client": "Investor Eligibility.Qualified Client Status",
+            "Custodian Details": "",
+            "Restricted Investor Status": "Investor Eligibility.Restricted Status",
+            "ERISA - Benefit Plan Investor": "Type of Subscriber.BenefitPlanInvestorcheck_ID"
+        },
+        "Partnership": {
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Principal Place of Business": "principle_place_of_business",
+            "Tax ID": "investorSSN_ID",
+            "Email IDs": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatories": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "Managing Partner": "",
+            "Director List": "Directors_id",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Managing Director": "",
+            "PEP Status": "PEP_IDs",
+            "Restricted Investor Status": "Investor Eligibility.Restricted Status",
+            "ERISA - Benefit Plan Investor": "Type of Subscriber.BenefitPlanInvestorcheck_ID"
+        },
+        "Corporation/LLC": {
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Country of Incorporation": "countryofincorporation/domicile",
+            "Principal Place of Business": "principle_place_of_business",
+            "Tax ID": "investorSSN_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Email IDs": "investoremail_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatories List": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "Qualified Client": "Investor Eligibility.Qualified Client Status",
+            "Custodian Details": "",
+            "PEP Status": "PEP_IDs",
+            "Restricted Investor Status": "Investor Eligibility.Restricted Status",
+            "ERISA - Benefit Plan Investor": "Type of Subscriber.BenefitPlanInvestorcheck_ID"
+        },
+        "Trust/Non-Profit Organisations": {
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Principal Place of Business": "principle_place_of_business",
+            "Tax ID": "investorSSN_ID",
+            "Email IDs": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatories List": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Trustee(s)": "",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "Managing Director": "",
+            "PEP Status": "PEP_IDs",
+            "Restricted Investor Status": "Investor Eligibility.Restricted Status",
+            "ERISA - Benefit Plan Investor": "Type of Subscriber.BenefitPlanInvestorcheck_ID"
+        },
+        "Fund/Fund of Funds": {
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Country of Incorporation": "countryofincorporation/domicile",
+            "Principal Place of Business": "principle_place_of_business",
+            "Tax ID": "investorSSN_ID",
+            "Email ID": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatories List": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "Managing Director": "",
+            "PEP Status": "PEP_IDs",
+            "Restricted Investor Status": "Investor Eligibility.Restricted Status",
+            "ERISA - Benefit Plan Investor": "Type of Subscriber.BenefitPlanInvestorcheck_ID"
+            },
+        "IRA": {
+            "Name": "investorFullLegalName_ID",
+            "Registered Address": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Tax ID": "investorSSN_ID",
+            "Email ID": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatory": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "Managing Director": "",
+            "PEP Status": "PEP_IDs"
+        },
+        "Government Bodies": {
+            "Name": "investorFullLegalName_ID",
+            "Address (Jurisdiction)": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Tax ID": "investorSSN_ID",
+            "Email ID": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatory": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Custodian Details": "",
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "PEP Status": "PEP_IDs"
+        },
+        "Education Institutions": {
+            "Name": "investorFullLegalName_ID",
+            "Address (Jurisdiction)": {
+                "Address Line 1": "investor_registered_adressline1_ID",
+                "Address Line 2": "investor_registered_adressline2_ID",
+                "City": "investor_registered_City_ID",
+                "State": "investor_registered_State_ID",
+                "Country": "investor_registered_Country_ID",
+                "Zip": "investor_registered_Zip_ID"
+            },
+            "Tax ID": "investorSSN_ID",
+            "Email ID": "investoremail_ID",
+            "Phone": "investortelephoneNO_ID",
+            "Wire Info": {
+                "Bank Name": "wiringDetails.BankName",
+                "Account Name": "wiringDetails.AccountName",
+                "Account Number": "wiringDetails.AccountNumber",
+                "ABA/Chips Number": "wiringDetails.ABA0rchipsNumber",
+                "IBAN": "wiringDetails.IBAN",
+                "SWIFT": "wiringDetails.SWIFT",
+                "Further Credit": "wiringDetails.forfurthercredit",
+                "Address": {
+                    "Address Line 1": "wiringDetails.address.addressline1",
+                    "Address Line 2": "wiringDetails.address.addressline2",
+                    "City": "wiringDetails.address.City",
+                    "State": "wiringDetails.address.State",
+                    "Country": "wiringDetails.address.Country",
+                    "ZipCode": "wiringDetails.address.ZipCode"
+                }
+            },
+            "Share Class": {
+                "Ordinary/Common": "",
+                "Preferred": "",
+                "Class A": "",
+                "Class B": "",
+                "Class C": "",
+                "Class D": "",
+                "Class E": "",
+                "Class F": "",
+                "Non-voting": "",
+                "Founders": "",
+                "Employee (ESOP)": "",
+                "Deferred": "",
+                "Growth": ""
+            },
+            "Commitment Amount": "",
+            "Authorized Signatory": {
+                "Name": "EntityRepresentativeName_ID",
+                "Title": "EntityRepresentativeTitle_ID",
+                "Email": "EntityRepresentativeEmail_ID"
+            },
+            "Custodian Details": "",
+            "Accredited Investor": "Investor Eligibility.Accredited Investor Status",
+            "Beneficial Owner List": "Beneficial_owners_ids",
+            "Qualified Purchaser": "Investor Eligibility.Qualified Purchaser",
+            "PEP Status": "PEP_IDs"
+        }
+    }
+}

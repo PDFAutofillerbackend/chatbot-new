@@ -1,0 +1,312 @@
+{
+    "Details in Subscription Booklet": {
+        "investorFullLegalName_ID": {
+            "value": ""
+        },
+        "Type of Subscriber": {
+            "individualcheck_ID": {
+                "value": ""
+            },
+            "corporationcheck_ID": {
+                "value": ""
+            },
+            "trustcheck_ID": {
+                "value": ""
+            },
+            "jointtenantscheck_ID": {
+                "value": ""
+            },
+            "partenershipcheck_ID": {
+                "value": ""
+            },
+            "limitedliabilitycompanycheck_ID": {
+                "value": ""
+            },
+            "keoghplancheck_ID": {
+                "value": ""
+            },
+            "fundsoffundscheck_ID": {
+                "value": ""
+            },
+            "otherscheck_ID": {
+                "value": ""
+            },
+            "IndividualRetirementAccount_ID": {
+                "value": ""
+            },
+            "BenefitPlanInvestorcheck_ID": {
+                "value": ""
+            },
+            "BrokerBreakercheck_ID": {
+                "value": ""
+            },
+            "RegisteredInvestmentCompanycheck_ID": {
+                "value": ""
+            },
+            "others_ID": {
+                "value": ""
+            }
+        },
+        "Address (Registered)": {
+            "investor_registered_adressline1_ID": {
+                "value": ""
+            },
+            "investor_registered_adressline2_ID": {
+                "value": ""
+            },
+            "investor_registered_City_ID": {
+                "value": ""
+            },
+            "investor_registered_State_ID": {
+                "value": ""
+            },
+            "investor_registered_Country_ID": {
+                "value": ""
+            },
+            "investor_registered_Zip_ID": {
+                "value": ""
+            }
+        },
+        "Address (Mailing)": {
+            "investor_mailing_addressline1_ID": {
+                "value": ""
+            },
+            "investor_mailing_addressline2_ID": {
+                "value": ""
+            },
+            "investor_mailing_City_ID": {
+                "value": ""
+            },
+            "investor_mailing_State_ID": {
+                "value": ""
+            },
+            "investor_mailing_Country_ID": {
+                "value": ""
+            },
+            "investor_mailing_Zip_ID": {
+                "value": ""
+            }
+        },
+        "investorEINTAX_ID": {
+            "value": ""
+        },
+        "investorSSN_ID": {
+            "value": ""
+        },
+        "investortelephoneNO_ID": {
+            "value": ""
+        },
+        "Fax_number": {
+            "value": ""
+        },
+        "investoremail_ID": {
+            "value": ""
+        },
+        "Form PF (Investor Type)": {
+            "NonIndividualInvestmentCompany_ID": {
+                "value": ""
+            },
+            "NonIndividualPrivateFund_ID": {
+                "value": ""
+            },
+            "NonIndividualBankingorThriftInstitution_ID": {
+                "value": ""
+            },
+            "NonIndividualNon-profitOrganization_ID": {
+                "value": ""
+            },
+            "NonIndividualSovereignWealthFundorForeignOfficialInstitution_ID": {
+                "value": ""
+            },
+            "NonIndividualStateorMunicipalGovernmentEntity(otherthanagovernmentalpensionplan)_ID": {
+                "value": ""
+            },
+            "NonIndividualStateorMunicipalGovernmentalPensionPlan_ID": {
+                "value": ""
+            },
+            "NonIndividualPensionPlan(otherthanagovernmentalpensionplan)_ID": {
+                "value": ""
+            },
+            "Individual_ID": {
+                "value": ""
+            },
+            "IndividualthatisaUnitedStatesperson_ID": {
+                "value": ""
+            },
+            "IndividualthatisnotaUnitedStatesperson_ID": {
+                "value": ""
+            }
+        },
+        "Date of Birth": {
+            "investorDOB_ID": {
+                "value": ""
+            },
+            "Co-investorDOB_ID": {
+                "value": ""
+            }
+        },
+        "investorInceptionDate_ID": {
+            "value": ""
+        },
+        "Entity Representative": {
+            "EntityRepresentativeName_ID": {
+                "value": ""
+            },
+            "EntityRepresentativeTitle_ID": {
+                "value": ""
+            },
+            "EntityRepresentativeEmail_ID": {
+                "value": ""
+            }
+        },
+        "Co-Investor": {
+            "Co-Investorname_ID": {
+                "value": ""
+            },
+            "Co-InvestorMail_ID": {
+                "value": ""
+            }
+        },
+        "InvestorOccupation_ID": {
+            "value": ""
+        },
+        "InvestorNatureofbusiness_ID": {
+            "value": ""
+        },
+        "principle_place_of_business": {
+            "value": ""
+        },
+        "countryofincorporation/domicile": {
+            "value": ""
+        },
+        "pointofcontact_id": {
+            "value": ""
+        },
+        "Wiring Details": {
+            "wiringDetails.BankName": {
+                "value": ""
+            },
+            "wiringDetails.AccountName": {
+                "value": ""
+            },
+            "wiringDetails.AccountNumber": {
+                "value": ""
+            },
+            "wiringDetails.ABA0rchipsNumber": {
+                "value": ""
+            },
+            "wiringDetails.IBAN": {
+                "value": ""
+            },
+            "wiringDetails.SWIFT": {
+                "value": ""
+            },
+            "wiringDetails.forfurthercredit": {
+                "value": ""
+            },
+            "wiringDetails.address.addressline1": {
+                "value": ""
+            },
+            "wiringDetails.address.addressline2": {
+                "value": ""
+            },
+            "wiringDetails.address.City": {
+                "value": ""
+            },
+            "wiringDetails.address.State": {
+                "value": ""
+            },
+            "wiringDetails.address.Country": {
+                "value": ""
+            },
+            "wiringDetails.address.ZipCode": {
+                "value": ""
+            }
+        },
+        "authorized_signatory_fields_IDs": {
+            "value": ""
+        },
+        "PEP_IDs": {
+            "value": ""
+        },
+        "USD/EUR/GBP_IDs": {
+            "value": ""
+        },
+        "Directors_id": {
+            "value": ""
+        },
+        "Beneficial_owners_ids": {
+            "value": ""
+        },
+        "Share Class Type": {
+            "Ordinary/Common": {
+                "value": ""
+            },
+            "Preferred": {
+                "value": ""
+            },
+            "Class A": {
+                "value": ""
+            },
+            "Class B": {
+                "value": ""
+            },
+            "Class C": {
+                "value": ""
+            },
+            "Class D": {
+                "value": ""
+            },
+            "Class E": {
+                "value": ""
+            },
+            "Class F": {
+                "value": ""
+            },
+            "Non-voting": {
+                "value": ""
+            },
+            "Founders": {
+                "value": ""
+            },
+            "Employee (ESOP)": {
+                "value": ""
+            },
+            "Deferred": {
+                "value": ""
+            },
+            "Growth": {
+                "value": ""
+            }
+        },
+        "Investor Eligibility": {
+            "U.S Person": {
+                "value": ""
+            },
+            "Accredited Investor Status": {
+                "value": ""
+            },
+            "Qualified Client Status": {
+                "value": ""
+            },
+            "ERISA": {
+                "value": ""
+            },
+            "Qualified Purchaser Status": {
+                "value": ""
+            },
+            "Restricted Status": {
+                "value": ""
+            },
+            "New Issue Eligiblity/ FINRA": {
+                "value": ""
+            }
+        },
+        "Self_certification": {
+            "value": ""
+        },
+        "Additional subs": {
+            "value": ""
+        }
+    }
+}

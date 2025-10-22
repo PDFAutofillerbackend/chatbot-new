@@ -1,0 +1,24 @@
+# --- Core ---
+python-dotenv
+openai
+pandas
+
+# --- LangChain ecosystem ---
+langchain
+langchain-core
+langchain-openai
+
+# --- NLP & text processing ---
+spacy
+fuzzywuzzy
+python-Levenshtein
+regex
+
+# --- AWS Lambda helper (optional) ---
+boto3
+
+# --- JSON/YAML/utility ---
+pydantic
+
+# --- Optional for interactive CLI (local use) ---
+rich

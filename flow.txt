@@ -1,0 +1,34 @@
+User: Hi
+Bot: Hi there, I’m Chatname your Finance Form Assistant. 
+     I can help you fill out your information in PDF documents quickly and accurately.
+     Would you like to get started now?
+
+User: Yes / Sure / Y / Absolutely
+Bot: Great! Could you tell me what type of investor category best describes you?
+
+User: Individual
+Bot: Alright, let’s get started! Please enter the details you’d like to fill in the PDF. 
+     For best results, separate multiple details using ;, & or place each on a new line.
+
+User: deew@gmail.com, my name is dewaang, my telephone number is 987654321
+Bot: It looks like your phone number is missing the country code. 
+     Please enter it with the code.
+
+User: +91-9876543210
+Bot: Do you have any other information you’d like to provide?
+
+User: Yes / Sure / Y / Absolutely
+Bot: Alright! Please enter details in the chat whenever you’re ready.
+
+User: company - abc corp
+Bot: Do you have any other information you’d like to provide?
+
+User: No / Not now / Will not
+→ (background mandatory field check)
+   - If all mandatory keys filled:
+       Bot: All set! Your PDF is ready. You can add more details or fill another form anytime.
+   - If missing fields:
+       Bot: It looks like some mandatory information is missing. 
+            They are listed below. Would you like to provide them now?
+            (Yes → collect missing info)
+            (No → same final message)

@@ -1,16 +1,16 @@
-# live_fill_final.py
 import os
 import json
 import uuid
 import datetime
 from dotenv import load_dotenv
 from collections import defaultdict
+import warnings
+warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 # LangChain & OpenAI
 from langchain_openai import ChatOpenAI
-from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
-from langchain.memory import ConversationBufferWindowMemory
+from langchain_core.runnables import RunnableSequence
 
 # NLP fallback
 import re
@@ -45,7 +45,6 @@ try:
     nlp = spacy.load("en_core_web_sm")
 except:
     nlp = None
-    print("⚠️ spaCy not loaded. Install with: python -m spacy download en_core_web_sm")
 
 # ------------------- Utilities -------------------
 def load_json(path):
@@ -125,6 +124,15 @@ def fallback_extract(user_input: str, form_keys_flat: dict):
     
     return mapped
 
+# ------------------- Phone validation -------------------
+def validate_phone_format(phone: str):
+    """Check if phone has country code"""
+    if not phone.startswith('+'):
+        return False
+    if len(re.sub(r'\D', '', phone)) < 10:
+        return False
+    return True
+
 # ------------------- LLM extraction -------------------
 EXTRACT_PROMPT = PromptTemplate(
     input_variables=["schema_json", "user_input", "chat_history"],
@@ -146,26 +154,22 @@ Example output: {{"Name": "John Doe", "Email ID": "john@example.com"}}
 JSON:"""
 )
 
-extract_chain = LLMChain(llm=llm_extraction, prompt=EXTRACT_PROMPT)
-
 def llm_extract(user_input: str, chat_history: str, live_fill_flat: dict):
-    # Send subset of keys to save tokens (most relevant ones)
     schema_keys = list(live_fill_flat.keys())[:100]
     schema_json = json.dumps(schema_keys, ensure_ascii=False)
     
     try:
-        result = extract_chain.invoke({
+        chain = EXTRACT_PROMPT | llm_extraction
+        result = chain.invoke({
             "schema_json": schema_json,
             "user_input": user_input,
             "chat_history": chat_history
         })
-        raw = result.get('text', '{}')
+        raw = result.content if hasattr(result, 'content') else str(result)
         parsed = json.loads(raw)
-        # Filter to only valid keys
         filtered = {k: v for k, v in parsed.items() if k in live_fill_flat}
         return filtered
     except Exception as e:
-        print(f"⚠️ LLM extraction failed: {e}")
         return None
 
 # ------------------- Natural conversation -------------------
@@ -187,66 +191,45 @@ Generate ONE natural, friendly question (1 sentence max) asking if the user has 
 Question:"""
 )
 
-conversation_chain = LLMChain(llm=llm_conversation, prompt=CONVERSATION_PROMPT)
-
 def generate_natural_followup(extracted: dict, missing_count: int, chat_history: str):
     try:
-        result = conversation_chain.invoke({
+        chain = CONVERSATION_PROMPT | llm_conversation
+        result = chain.invoke({
             "extracted_fields": list(extracted.keys()) if extracted else "nothing new",
             "missing_count": missing_count,
             "chat_history": chat_history
         })
-        return result.get('text', '').strip()
+        response = result.content if hasattr(result, 'content') else str(result)
+        return response.strip()
     except:
-        # Fallback questions
-        if missing_count > 15:
-            return "Got it! Anything else you'd like to share before I ask specific questions?"
-        elif missing_count > 5:
-            return "Thanks! Want to add anything else?"
-        else:
-            return "Perfect! Anything more you'd like to mention?"
+        return "Do you have any other information you'd like to provide?"
 
 # ------------------- Field Mapping Helper -------------------
 def resolve_field_mapping(mandatory_data: dict, form_keys_flat: dict):
-    """
-    Resolve mandatory field mappings to actual form_keys paths.
-    mandatory.json structure: "Human Name": "field_id" or nested
-    form_keys.json structure: "Section.field_id.value": ""
-    
-    This function finds the actual paths in form_keys for each mandatory field.
-    """
     resolved = {}
     
     def find_field_path(field_id: str):
-        """Find the path in form_keys that contains this field ID"""
         if not field_id:
             return None
         for path in form_keys_flat.keys():
-            # Check if field_id is in the path
             if field_id in path and path.endswith('.value'):
                 return path
         return None
     
     def process_dict(d, parent_key=""):
-        """Recursively process mandatory structure"""
         for key, value in d.items():
             if isinstance(value, dict):
-                # Nested structure, go deeper
                 process_dict(value, key)
             elif isinstance(value, str) and value:
-                # String value = field ID mapping
                 actual_path = find_field_path(value)
                 if actual_path:
                     resolved[actual_path] = ""
             elif value == "":
-                # Empty string, check if it's a section header
-                # Look for fields under this section
                 if parent_key:
                     section_prefix = f"{parent_key}.{key}"
                 else:
                     section_prefix = key
                 
-                # Find any field that starts with this section
                 for path in form_keys_flat.keys():
                     if section_prefix in path or key.replace(" ", "").lower() in path.lower():
                         resolved[path] = ""
@@ -259,29 +242,17 @@ def get_missing_mandatory_keys(live_fill_flat: dict, mandatory_flat: dict):
     missing = []
     for k in mandatory_flat:
         val = live_fill_flat.get(k, "")
-        # Only empty strings and None are missing (not true/false booleans)
         if val == "" or val is None:
             missing.append(k)
     return missing
 
-def get_remaining_optional_keys(live_fill_flat: dict, mandatory_flat: dict):
-    optional = []
-    for k in live_fill_flat:
-        if k not in mandatory_flat:
-            val = live_fill_flat.get(k, "")
-            if not str(val).strip() or val == "" or val is None:
-                optional.append(k)
-    return optional
-
 def classify_mandatory_fields(mandatory_keys):
-    """Separate text fields from boolean groups"""
     boolean_groups = ["Form PF (Investor Type)", "Type of Subscriber", "Share Class"]
     
     text_fields = []
     grouped_booleans = defaultdict(list)
     
     for key in mandatory_keys:
-        # Check if it's a boolean group field
         section = next((grp for grp in boolean_groups if grp.lower() in key.lower()), None)
         if section:
             grouped_booleans[section].append(key)
@@ -290,86 +261,72 @@ def classify_mandatory_fields(mandatory_keys):
     
     return text_fields, grouped_booleans
 
-def get_all_boolean_fields_in_group(group_name, mandatory_flat, live_fill_flat):
-    """Get ALL fields in a boolean group, regardless of current value"""
+def get_all_boolean_fields_in_group(group_name, live_fill_flat):
     all_fields = []
     for key in live_fill_flat.keys():
         if group_name.lower() in key.lower():
             all_fields.append(key)
     return all_fields
 
-def ask_text_fields_sequential(fields: list, live_fill_flat: dict, logs: list, form_keys_flat: dict):
-    """Ask text fields one by one (isolated code style)"""
+def ask_text_fields_sequential(fields: list, live_fill_flat: dict, logs: list):
     filled = {}
     mailing_checked = False
     same = "n"
     
-    print("\n📝 Let me ask you a few specific questions:\n")
-    
-    # Only ask for fields that exist and aren't already filled
-    fields_to_ask = []
     for key in fields:
-        if key not in form_keys_flat:
-            logs.append({"warning": "field_not_in_form_keys", "field": key})
-            continue
-        
-        # Check if already filled
         current_value = live_fill_flat.get(key, "")
         if current_value and str(current_value).strip():
-            print(f"✓ Already have: {key.split('.')[-2]} = {current_value}")
             continue
         
-        fields_to_ask.append(key)
-    
-    if not fields_to_ask:
-        print("✅ All mandatory fields already filled!")
-        return filled
-    
-    for key in fields_to_ask:
-        # Get readable name from path
         path_parts = key.split('.')
         if len(path_parts) >= 2:
             short_name = path_parts[-2].replace("_", " ").replace("ID", "").strip().title()
         else:
             short_name = key.replace("_", " ").title()
         
-        # Special handling for mailing address
         if "mailing" in key.lower() and not mailing_checked:
-            same = input("\n📮 Is mailing address same as registered address? (y/n): ").strip().lower()
+            same = input("\nIs mailing address same as registered address? (y/n): ").strip().lower()
             mailing_checked = True
             
             if same == "y":
-                # Find corresponding registered field
-                for mail_key in [k for k in fields_to_ask if "mailing" in k.lower()]:
+                for mail_key in [k for k in fields if "mailing" in k.lower()]:
                     reg_key = mail_key.replace("mailing", "registered")
                     if reg_key in live_fill_flat and live_fill_flat[reg_key]:
                         filled[mail_key] = live_fill_flat[reg_key]
-                        print(f"✓ Copied: {mail_key.split('.')[-2]}")
                 continue
         
         if "mailing" in key.lower() and same == "y":
             continue
         
-        value = input(f"→ {short_name}: ").strip()
-        if value:
-            filled[key] = value
-            logs.append({"sequential_fill": {key: value}})
+        if "phone" in key.lower() or "telephone" in key.lower():
+            while True:
+                value = input(f"{short_name}: ").strip()
+                if value:
+                    if not validate_phone_format(value):
+                        print("It looks like your phone number is missing the country code. Please enter it with the code.")
+                        logs.append({"validation_error": "phone_missing_country_code"})
+                        continue
+                    filled[key] = value
+                    logs.append({"sequential_fill": {key: value}})
+                    break
+                else:
+                    break
+        else:
+            value = input(f"{short_name}: ").strip()
+            if value:
+                filled[key] = value
+                logs.append({"sequential_fill": {key: value}})
     
     return filled
 
 def ask_grouped_boolean_fields(grouped_booleans: dict, logs: list):
-    """Ask boolean groups with multi-select, store as true/false"""
     filled = {}
-    
-    print("\n✅ Now let's select some categories:\n")
     
     for group_name, fields in grouped_booleans.items():
         print(f"\n--- {group_name} ---")
         options = list(fields)
         
-        # Display options
         for i, key in enumerate(options, start=1):
-            # Get readable name from path (second-to-last part before .value)
             path_parts = key.split(".")
             if len(path_parts) >= 2:
                 opt_name = path_parts[-2].replace("_", " ").replace("ID", "").strip().title()
@@ -377,11 +334,10 @@ def ask_grouped_boolean_fields(grouped_booleans: dict, logs: list):
                 opt_name = key.replace("_", " ").title()
             print(f"{i}. {opt_name}")
         
-        # Get user selection
         while True:
             choice = input("Select one or multiple (comma-separated, e.g., 1,3): ").strip()
             try:
-                if not choice:  # Allow empty selection
+                if not choice:
                     indices = []
                     break
                 indices = [int(i) for i in choice.split(",") if i.strip()]
@@ -392,7 +348,6 @@ def ask_grouped_boolean_fields(grouped_booleans: dict, logs: list):
             except ValueError:
                 print("❌ Please enter numbers separated by commas.")
         
-        # Store as true/false (ONLY for selected options, rest stay as is)
         for i, key in enumerate(options, start=1):
             filled[key] = (i in indices)
             logs.append({"boolean_selection": {key: filled[key]}})
@@ -401,9 +356,19 @@ def ask_grouped_boolean_fields(grouped_booleans: dict, logs: list):
 
 # ------------------- Main flow -------------------
 def main():
-    print("🌟 Welcome to Smart Form Assistant\n")
+    print("Hi there, I'm Chatname your Finance Form Assistant.")
+    print("I can help you fill out your information in PDF documents quickly and accurately.")
     
-    # Setup
+    while True:
+        start_choice = input("Would you like to get started now? (yes/no): ").strip().lower()
+        if start_choice in ["yes", "y", "sure", "absolutely"]:
+            break
+        elif start_choice in ["no", "n", "nope", "not now"]:
+            print("Thank you for visiting. Goodbye!")
+            return
+        else:
+            print("Oops! I didn't get that. Could you please provide the details once more?")
+    
     session_folder = create_session_folder()
     live_fill_file = os.path.join(session_folder, "live_fill.json")
     log_file = os.path.join(session_folder, "log.json")
@@ -415,9 +380,11 @@ def main():
     save_json(live_fill_file, live_fill)
     
     logs = []
-    memory = ConversationBufferWindowMemory(k=MEMORY_BUFFER_SIZE, return_messages=False)
+    chat_history = ""
     
     # ============ PHASE 1: Select Investor Type ============
+    print("\nGreat! Could you tell me what type of investor category best describes you?")
+    
     mandatory_data = mandatory_master.get("Type of Investors", {})
     investor_list = list(mandatory_data.keys())
     
@@ -425,7 +392,6 @@ def main():
         print("❌ No investor types found. Exiting.")
         return
     
-    print("Available Investor Types:")
     for idx, t in enumerate(investor_list, start=1):
         print(f"{idx}. {t}")
     
@@ -439,30 +405,18 @@ def main():
         print("❌ Invalid type. Exiting.")
         return
     
-    print(f"\n✅ Investor type selected: {investor_type}\n")
+    print(f"\nAlright, let's get started! Please enter the details you'd like to fill in the PDF.")
+    print("For best results, separate multiple details using ;, & or place each on a new line.\n")
     logs.append({"investor_type": investor_type})
     
-    # Flatten form_keys only
     live_fill_flat = flatten_dict(live_fill)
-    
-    # CRITICAL: Resolve mandatory field mappings (don't flatten mandatory first!)
-    print("🔄 Resolving field mappings...")
     mandatory_flat = resolve_field_mapping(mandatory_data[investor_type], live_fill_flat)
-    print(f"✅ Mapped {len(mandatory_flat)} mandatory fields\n")
     
     if not mandatory_flat:
         print("⚠️ Warning: No valid mandatory fields found after mapping!")
-        print("Check that field IDs in mandatory.json match those in form_keys.json")
-        # Show example of expected vs actual
-        print("\nExample mandatory.json entry:")
-        print('  "Name": "investorFullLegalName_ID"')
-        print("\nExpected form_keys.json entry:")
-        print('  "Details in Subscription Booklet.investorFullLegalName_ID.value": ""')
         return
     
     # ============ PHASE 2: Conversational Information Gathering ============
-    print("💬 Tell me about yourself! Share any information in your own words.\n")
-    
     conversation_active = True
     
     while conversation_active:
@@ -471,11 +425,7 @@ def main():
         if not user_input:
             continue
         
-        # Save to memory
-        memory.save_context({"input": user_input}, {"output": ""})
-        
-        # Extract using LLM + fallback
-        chat_history = memory.load_memory_variables({}).get('history', '')
+        chat_history += f"User: {user_input}\n"
         
         extracted = llm_extract(user_input, chat_history, live_fill_flat)
         if not extracted:
@@ -484,79 +434,81 @@ def main():
         else:
             logs.append({"extraction_method": "llm", "result": extracted})
         
-        # Update live_fill
+        # Validate phone numbers
+        phone_fields = [k for k in (extracted or {}).keys() if "phone" in k.lower() or "telephone" in k.lower()]
+        for phone_key in phone_fields:
+            phone_value = extracted[phone_key]
+            if phone_value and not validate_phone_format(phone_value):
+                print("It looks like your phone number is missing the country code. Please enter it with the code.")
+                logs.append({"validation_error": "phone_missing_country_code", "field": phone_key})
+                del extracted[phone_key]
+        
         if extracted:
             deep_update(live_fill_flat, extracted)
             save_json(live_fill_file, unflatten_dict(live_fill_flat))
             save_json(log_file, logs)
         
-        # Generate natural follow-up
         missing = get_missing_mandatory_keys(live_fill_flat, mandatory_flat)
         followup = generate_natural_followup(extracted or {}, len(missing), chat_history)
         
-        print(f"\n💬 {followup}")
-        memory.save_context({"input": ""}, {"output": followup})
+        print(f"\n{followup}")
+        chat_history += f"Bot: {followup}\n"
         
         continue_input = input("→ ").strip().lower()
         
-        # Check if user wants to continue
-        if continue_input in ["no", "n", "nope", "done", "that's all", "nothing", "nah", "finish"]:
+        if continue_input in ["no", "n", "nope", "done", "that's all", "nothing", "nah", "finish", "not now", "will not"]:
             conversation_active = False
-            print("\n✅ Great! Let me gather a few more details.\n")
+            print("\nAlright! Please enter details in the chat whenever you're ready.\n")
         elif continue_input in ["yes", "y", "yeah", "sure", "yep", "ok", "okay", "more"]:
-            print("\n💬 Go ahead:\n")
-        else:
-            # Treat as more information and loop again
             print()
+        else:
+            print("\nOops! I didn't get that. Could you please provide the details once more?")
     
-    # ============ PHASE 3: Ask Mandatory Fields One-by-One ============
+    # ============ PHASE 3: Check Missing Mandatory Fields ============
     missing_mandatory = get_missing_mandatory_keys(live_fill_flat, mandatory_flat)
     
     if missing_mandatory:
-        # Separate text fields and boolean groups
-        text_fields, grouped_booleans = classify_mandatory_fields(missing_mandatory)
+        missing_field_names = []
+        for key in missing_mandatory:
+            path_parts = key.split('.')
+            if len(path_parts) >= 2:
+                field_name = path_parts[-2].replace("_", " ").replace("ID", "").strip().title()
+            else:
+                field_name = key.replace("_", " ").title()
+            missing_field_names.append(field_name)
         
-        # Ask text fields sequentially
-        if text_fields:
-            filled_text = ask_text_fields_sequential(text_fields, live_fill_flat, logs, live_fill_flat)
-            deep_update(live_fill_flat, filled_text)
-            save_json(live_fill_file, unflatten_dict(live_fill_flat))
-            save_json(log_file, logs)
+        print("It looks like some mandatory information is missing.")
+        print("They are listed below:")
+        for i, field in enumerate(missing_field_names, start=1):
+            print(f"{i}. {field}")
         
-        # Ask boolean grouped fields - get ALL fields in each group, not just missing ones
-        if grouped_booleans:
-            # Rebuild grouped_booleans with ALL fields in each group
-            complete_grouped_booleans = defaultdict(list)
-            for group_name in grouped_booleans.keys():
-                complete_grouped_booleans[group_name] = get_all_boolean_fields_in_group(
-                    group_name, mandatory_flat, live_fill_flat
-                )
+        collect_choice = input("\nWould you like to provide them now? (yes/no): ").strip().lower()
+        
+        if collect_choice in ["yes", "y", "sure", "absolutely"]:
+            text_fields, grouped_booleans = classify_mandatory_fields(missing_mandatory)
             
-            filled_booleans = ask_grouped_boolean_fields(complete_grouped_booleans, logs)
-            deep_update(live_fill_flat, filled_booleans)
-            save_json(live_fill_file, unflatten_dict(live_fill_flat))
-            save_json(log_file, logs)
+            if text_fields:
+                filled_text = ask_text_fields_sequential(text_fields, live_fill_flat, logs)
+                deep_update(live_fill_flat, filled_text)
+                save_json(live_fill_file, unflatten_dict(live_fill_flat))
+                save_json(log_file, logs)
+            
+            if grouped_booleans:
+                complete_grouped_booleans = defaultdict(list)
+                for group_name in grouped_booleans.keys():
+                    complete_grouped_booleans[group_name] = get_all_boolean_fields_in_group(group_name, live_fill_flat)
+                
+                filled_booleans = ask_grouped_boolean_fields(complete_grouped_booleans, logs)
+                deep_update(live_fill_flat, filled_booleans)
+                save_json(live_fill_file, unflatten_dict(live_fill_flat))
+                save_json(log_file, logs)
     
-    print("\n✅ All mandatory fields filled!")
+    # ============ PHASE 4: Final Message ============
+    print("\nAll set! Your PDF is ready. You can add more details or fill another form anytime.")
     
-    # ============ PHASE 4: Optional Fields ============
-    remaining_optional = get_remaining_optional_keys(live_fill_flat, mandatory_flat)
-    
-    if remaining_optional:
-        opt_choice = input(f"\n🤔 There are {len(remaining_optional)} optional fields. Fill them? (yes/no): ").strip().lower()
-        
-        if opt_choice in ["yes", "y"]:
-            filled_opt = ask_text_fields_sequential(remaining_optional, live_fill_flat, logs, live_fill_flat)
-            deep_update(live_fill_flat, filled_opt)
-            save_json(live_fill_file, unflatten_dict(live_fill_flat))
-            save_json(log_file, logs)
-    
-    # ============ PHASE 5: Summary ============
-    print("\n🎉 Form completed successfully!\n")
-    print(f"📁 Session folder: {session_folder}")
+    print(f"\n📁 Session folder: {session_folder}")
     print(f"📄 Live JSON: {live_fill_file}")
     print(f"📝 Log file: {log_file}")
-    print("\n✅ All data saved. Thank you!")
 
 if __name__ == "__main__":
     main()

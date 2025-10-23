@@ -1,3 +1,16 @@
+└── 📁chatbot
+    ├── .env
+    ├── .gitignore
+    ├── flow.txt
+    ├── form_keys.json
+    ├── live_fill_2.py
+    ├── live_fill_final.py
+    ├── main.py
+    ├── mandatory.json
+    ├── README.md
+    └── requirements.txt
+    └── build_lambda.ps1
+
 User: Hi
 Bot: Hi there, I’m Chatname your Finance Form Assistant. 
      I can help you fill out your information in PDF documents quickly and accurately.

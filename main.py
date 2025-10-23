@@ -1,6 +1,6 @@
-# main.py
 import json
 import os
+import boto3
 from live_fill_final import (
     load_json,
     save_json,
@@ -14,12 +14,21 @@ from live_fill_final import (
     generate_natural_followup,
     validate_phone_format,
 )
-
 from dotenv import load_dotenv
 load_dotenv()
 
+# === S3 CONFIG ===
+S3_STATIC_BUCKET = "chatbot-static-configs"
 FORM_KEYS_FILE = "form_keys.json"
 MANDATORY_FILE = "mandatory.json"
+
+s3 = boto3.client("s3")
+
+
+def load_json_from_s3(bucket, key):
+    """Load JSON from S3 into Python dict"""
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    return json.loads(obj["Body"].read().decode("utf-8"))
 
 
 def create_lambda_session_folder(root="/tmp/chatbot_sessions"):
@@ -67,10 +76,10 @@ def lambda_handler(event, context):
         # 🔹 Setup session folder in /tmp
         session_folder = create_lambda_session_folder()
         live_fill_file = os.path.join(session_folder, "live_fill.json")
-        log_file = os.path.join(session_folder, "log.json")
 
-        form_keys = load_json(FORM_KEYS_FILE)
-        mandatory_master = load_json(MANDATORY_FILE)
+        # 🔹 Load form keys and mandatory fields from S3
+        form_keys = load_json_from_s3(S3_STATIC_BUCKET, FORM_KEYS_FILE)
+        mandatory_master = load_json_from_s3(S3_STATIC_BUCKET, MANDATORY_FILE)
 
         # 🔹 Use existing session data or start fresh
         if existing_session_data:
@@ -125,13 +134,12 @@ def lambda_handler(event, context):
         # 🔹 Prepare final response
         response_data = {
             "session_folder": session_folder,
-            "live_fill_file": live_fill_file,
             "method": method,
             "extracted_fields": extracted,
             "missing_mandatory_count": len(missing),
-            "missing_mandatory_fields": missing[:10],  # Limit to first 10
+            "missing_mandatory_fields": missing[:10],
             "followup_question": followup,
-            "session_data": updated_live_fill,  # Return for next invocation
+            "session_data": updated_live_fill,
             "phone_validation_errors": phone_validation_errors
         }
 

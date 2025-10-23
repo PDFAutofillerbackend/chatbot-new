@@ -1,4 +1,6 @@
 import os
+import boto3
+import io
 import json
 import uuid
 import datetime
@@ -18,6 +20,12 @@ import spacy
 from fuzzywuzzy import process
 
 # ------------------- Config -------------------
+s3 = boto3.client('s3')
+
+def load_json_from_s3(bucket, key):
+    response = s3.get_object(Bucket=bucket, Key=key)
+    return json.loads(response['Body'].read().decode('utf-8'))
+
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
@@ -373,9 +381,9 @@ def main():
     live_fill_file = os.path.join(session_folder, "live_fill.json")
     log_file = os.path.join(session_folder, "log.json")
     
-    form_keys = load_json(FORM_KEYS_FILE)
-    mandatory_master = load_json(MANDATORY_FILE)
-    
+    form_keys = load_json_from_s3("chatbot-static-configs", "form_keys.json")
+    mandatory_master = load_json_from_s3("chatbot-static-configs", "mandatory.json")
+
     live_fill = form_keys.copy()
     save_json(live_fill_file, live_fill)
     
@@ -504,6 +512,20 @@ def main():
                 save_json(log_file, logs)
     
     # ============ PHASE 4: Final Message ============
+    output_data = {
+        "live_fill": unflatten_dict(live_fill_flat),
+        "logs": logs
+    }
+
+    output_key = f"{session_folder.split('/')[-1]}/final_output.json"
+    s3.put_object(
+        Bucket="chatbot-outputs",
+        Key=output_key,
+        Body=json.dumps(output_data, indent=4),
+        ContentType="application/json"
+    )
+    print(f"✅ Uploaded final output to S3: s3://chatbot-outputs/{output_key}")
+
     print("\nAll set! Your PDF is ready. You can add more details or fill another form anytime.")
     
     print(f"\n📁 Session folder: {session_folder}")
